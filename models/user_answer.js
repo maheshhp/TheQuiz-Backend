@@ -1,15 +1,14 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var user_answer = sequelize.define('user_answer', {
+  const user_answer = sequelize.define('user_answer', {
     user_id: DataTypes.INTEGER,
     question_id: DataTypes.INTEGER,
-    option: DataTypes.STRING
+    option: DataTypes.STRING,
   }, {
     classMethods: {
-      associate: function(models) {
+      associate(models) {
         // associations can be defined here
-      }
-    }
+      },
+    },
   });
   return user_answer;
 };
