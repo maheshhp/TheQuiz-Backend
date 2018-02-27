@@ -17,7 +17,39 @@ module.exports = [
         .then((userData) => {
           if (userData) {
             Models.questions.findAll().then((questionsObject) => {
-              console.log(questionsObject[0]);
+              questionsObject.forEach((question) => {
+                getQuestionWithOptions.push(Models.question_option.findAll({
+                  where: {
+                    question_id: question.question_id,
+                  },
+                }));
+              });
+              Promise.all(getQuestionWithOptions).then((questionsWithOptions) => {
+                questionsObject.forEach((question) => {
+                  getUserOptionForQuestion.push(Models.user_answer.findOne({
+                    where: {
+                      question_id: question.question_id,
+                    },
+                  }));
+                });
+                Promise.all(getUserOptionForQuestion).then((userOptions) => {
+                  const tempResponseObject = [];
+                  for (let i = 0; i < questionsObject.length; i += 1) {
+                    tempResponseObject.push({
+                      userId: userData.id,
+                      userName: userData.user_name,
+                      questionId: questionsObject[i].question_id,
+                      question: questionsObject[i].question,
+                      questionOptions: questionsWithOptions[i],
+                      userOption: userOptions[i],
+                    });
+                  }
+                  response({
+                    data: tempResponseObject,
+                    statusCode: 200,
+                  });
+                });
+              });
             });
           } else {
             insertQuestionsToDB((res) => {
@@ -53,9 +85,6 @@ module.exports = [
                         Promise.all(getUserOptionForQuestion).then((userOptions) => {
                           const tempResponseObject = [];
                           for (let i = 0; i < questionsObject.length; i += 1) {
-                            // console.log(questionsObject[i].question);
-                            // console.log(questionsWithOptions[i].length);
-                            // console.log(userOptions);
                             tempResponseObject.push({
                               userId: user.id,
                               userName: user.user_name,
