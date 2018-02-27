@@ -31,7 +31,7 @@ describe('Testing the route that updates the option for a particular users quest
       },
     };
     Server.inject(request, (response) => {
-      expect(response).toBe(false);
+      expect(JSON.parse(response.payload).data).toEqual({ newOption: 'Oz', question_id: 10, user_id: 1 });
       done();
     });
   });
