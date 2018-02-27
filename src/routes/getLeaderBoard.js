@@ -5,9 +5,19 @@ module.exports = [
     method: 'GET',
     path: '/leaderBoard',
     handler: (request, response) => {
-      response({
-        data: 'Leaderboard',
-        statusCode: 200,
+      Models.users.findAll({
+        limit: 5,
+        order: [['score', 'DESC']],
+      }).then((result) => {
+        response({
+          data: result,
+          statusCode: 200,
+        });
+      }).catch((error) => {
+        response({
+          data: error,
+          statusCode: 200,
+        });
       });
     },
   },

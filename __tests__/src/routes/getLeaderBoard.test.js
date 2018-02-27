@@ -5,7 +5,7 @@ beforeAll((done) => {
   const tempCreateArray = [];
   for (let i = 0; i < 10; i += 1) {
     tempCreateArray.push({
-      name: `User${i}`,
+      user_name: `User${i}`,
       score: i,
     });
   }
@@ -39,7 +39,7 @@ describe('Testing the route that gets the top 5 entries by score', () => {
       url: '/leaderBoard',
     };
     Server.inject(request, (response) => {
-      expect(JSON.parse(response.payload).data.length).toBe(false);
+      expect(JSON.parse(response.payload).data[0].score).toBe(9);
       done();
     });
   });
