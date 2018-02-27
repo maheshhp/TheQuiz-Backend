@@ -26,7 +26,7 @@ const getQuestionsAndAnswers = (callback) => {
         Promise.all(answerFetchPromises).then((ansResponse) => {
           for (let i = 0; i < questionsApiResponse.length; i += 1) {
             insertToDbPromises[i] = Models.questions.create({
-              question_id: questionsApiResponse[i].question_id,
+              question_id: questionsApiResponse[i].questionId,
               question: questionsApiResponse[i].question,
               answer: JSON.parse(ansResponse[i]).answer,
             });
