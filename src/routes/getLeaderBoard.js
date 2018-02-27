@@ -3,10 +3,10 @@ const Models = require('../../models');
 module.exports = [
   {
     method: 'GET',
-    path: '/leaderBoard/{userId}',
+    path: '/leaderBoard',
     handler: (request, response) => {
       response({
-        data: request.params.userId,
+        data: 'Leaderboard',
         statusCode: 200,
       });
     },
