@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     user_id: DataTypes.INTEGER,
     question_id: DataTypes.INTEGER,
     option: DataTypes.STRING,
+    is_correct: DataTypes.INTEGER,
   }, {
     classMethods: {
       associate(models) {

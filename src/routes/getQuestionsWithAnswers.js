@@ -52,7 +52,7 @@ module.exports = [
               });
             });
           } else {
-            insertQuestionsToDB((res) => {
+            const insertData = (res) => {
               if (res === 'done') {
                 Models.questions.findAll().then((questionsObject) => {
                   Models.users.create({
@@ -64,6 +64,7 @@ module.exports = [
                         user_id: user.id,
                         question_id: question.question_id,
                         option: '',
+                        is_correct: 0,
                       }));
                     });
                     Promise.all(createUserOptionEntries).then(() => {
@@ -108,6 +109,13 @@ module.exports = [
                   data: { error: 'Internal error' },
                   statusCode: 500,
                 });
+              }
+            };
+            Models.users.count().then((count) => {
+              if (count === 0) {
+                insertQuestionsToDB((res) => { insertData(res); });
+              } else {
+                insertData('done');
               }
             });
           }
