@@ -5,6 +5,7 @@ module.exports = [
     method: 'POST',
     path: '/update',
     handler: (request, response) => {
+      console.log(request.payload);
       Models.user_answer.findOne({
         where: {
           user_id: request.payload.user_id,

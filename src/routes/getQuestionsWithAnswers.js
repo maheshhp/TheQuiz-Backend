@@ -29,10 +29,12 @@ module.exports = [
                   getUserOptionForQuestion.push(Models.user_answer.findOne({
                     where: {
                       question_id: question.question_id,
+                      user_id: userData.id,
                     },
                   }));
                 });
                 Promise.all(getUserOptionForQuestion).then((userOptions) => {
+                  console.log(userOptions);
                   const tempResponseObject = [];
                   for (let i = 0; i < questionsObject.length; i += 1) {
                     tempResponseObject.push({
