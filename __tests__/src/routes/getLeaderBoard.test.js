@@ -33,14 +33,4 @@ describe('Testing the route that gets the top 5 entries by score', () => {
       done();
     });
   });
-  test('Should top 5 scorers records in the user table', (done) => {
-    const request = {
-      method: 'GET',
-      url: '/leaderBoard',
-    };
-    Server.inject(request, (response) => {
-      expect(JSON.parse(response.payload).data[0].score).toBe(9);
-      done();
-    });
-  });
 });

@@ -5,15 +5,20 @@ module.exports = [
     method: 'GET',
     path: '/leaderBoard',
     handler: (request, response) => {
+      const findUserAnswers = [];
       const scoreUpdatePromises = [];
       Models.users.findAll().then((users) => {
         users.forEach((user) => {
-          let tempUserScore = 0;
-          Models.user_answer.findAll({
+          findUserAnswers.push(Models.user_answer.findAll({
             where: {
               user_id: user.id,
             },
-          }).then((userAnswers) => {
+          }));
+        });
+        Promise.all(findUserAnswers).then((usersAnswers) => {
+          usersAnswers.forEach((userAnswers) => {
+            console.log('-----------------------');
+            let tempUserScore = 0;
             userAnswers.forEach((userAnswer) => {
               if (userAnswer.is_correct === 1) {
                 tempUserScore += 1;
@@ -23,19 +28,20 @@ module.exports = [
               score: tempUserScore,
             }, {
               where: {
-                id: user.id,
+                id: userAnswers[0].user_id,
               },
             }));
-            Promise.all(scoreUpdatePromises).then((updateRes) => {
-              console.log('Here==>', updateRes);
-              Models.users.findAll({
-                limit: 5,
-                order: [['score', 'DESC']],
-              }).then((result) => {
-                response({
-                  data: result,
-                  statusCode: 200,
-                });
+            console.log('-----------------------');
+          });
+          Promise.all(scoreUpdatePromises).then((updateRes) => {
+            console.log('Boooo==>', updateRes);
+            Models.users.findAll({
+              limit: 5,
+              order: [['score', 'DESC']],
+            }).then((result) => {
+              response({
+                data: result,
+                statusCode: 200,
               });
             });
           });
