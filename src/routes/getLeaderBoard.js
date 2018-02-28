@@ -26,17 +26,17 @@ module.exports = [
                 id: user.id,
               },
             }));
-          });
-        });
-        Promise.all(scoreUpdatePromises).then((updateRes) => {
-          console.log('Boooo==>', updateRes);
-          Models.users.findAll({
-            limit: 5,
-            order: [['score', 'DESC']],
-          }).then((result) => {
-            response({
-              data: result,
-              statusCode: 200,
+            Promise.all(scoreUpdatePromises).then((updateRes) => {
+              console.log('Here==>', updateRes);
+              Models.users.findAll({
+                limit: 5,
+                order: [['score', 'DESC']],
+              }).then((result) => {
+                response({
+                  data: result,
+                  statusCode: 200,
+                });
+              });
             });
           });
         });
